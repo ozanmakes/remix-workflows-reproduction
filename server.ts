@@ -3,6 +3,32 @@ import { createRequestHandler, type ServerBuild } from "@remix-run/cloudflare";
 // @ts-ignore This file won’t exist if it hasn’t yet been built
 import * as build from "./build/server"; // eslint-disable-line import/no-unresolved
 import { getLoadContext } from "./load-context";
+import {
+  WorkflowEntrypoint,
+  WorkflowEvent,
+  WorkflowStep,
+} from "cloudflare:workers";
+
+interface Env {}
+type Params = {};
+
+// Create your own class that implements a Workflow
+export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
+  // Define a run() method
+  async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
+    // Define one or more steps that optionally return state.
+    const state = step.do("my first step", async () => {
+      return [1, 2, 3];
+    });
+
+    step.do("my second step", async () => {
+      for (let data in state) {
+        // Do something with your state
+      }
+    });
+  }
+}
+// </docs-tag name="simple-workflow-example">
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleRemixRequest = createRequestHandler(build as any as ServerBuild);

@@ -13,7 +13,8 @@
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": [
       "@remix-run/cloudflare",
-      "@cloudflare/workers-types",
+      "@cloudflare/workers-types/experimental",
+      "@cloudflare/workers-types/2023-07-01",
       "vite/client"
     ],
     "isolatedModules": true,
